@@ -3,8 +3,7 @@ package miPresentacion;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class GUI_Presentacion extends JFrame {
     //atributos
@@ -41,11 +40,11 @@ public class GUI_Presentacion extends JFrame {
         this.add(panelDatos,BorderLayout.CENTER);
 
         mifoto = new JButton("Este soy yo");
-        mifoto.addActionListener(escucha);
+        mifoto.addMouseListener(escucha);
         miHobby = new JButton("Este es mi Hobby");
-        miHobby.addActionListener(escucha);
+        miHobby.addMouseListener(escucha);
         misExpectativas = new JButton("Creo que...");
-        misExpectativas.addActionListener(escucha);
+        misExpectativas.addKeyListener(escucha);
 
         panelBotones = new JPanel();
         panelBotones.add(mifoto);
@@ -69,19 +68,20 @@ public class GUI_Presentacion extends JFrame {
         });
     }
 
-    private class Escucha implements ActionListener{
+    private class Escucha implements MouseListener, KeyListener {
         private ImageIcon image;
 
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void mouseClicked(MouseEvent e) {
             //JOptionPane.showMessageDialog(null,"oprimiste boton");
-            panelDatos.removeAll();
             if(e.getSource()==mifoto){
+                panelDatos.removeAll();
                 image = new ImageIcon(getClass().getResource("/recursos/micara.jpg"));
                 labelImagen.setIcon(image);
                 panelDatos.add(labelImagen);
             }else{
-                if(e.getSource()==miHobby){
+                if(e.getSource()==miHobby && e.getClickCount()==2){
+                    panelDatos.removeAll();
                     image = new ImageIcon(getClass().getResource("/recursos/postres.jpg"));
                     labelImagen.setIcon(image);
                     panelDatos.add(labelImagen);
@@ -94,7 +94,41 @@ public class GUI_Presentacion extends JFrame {
 
                     panelDatos.add(textoHobby);
 
-                }else{
+                }
+                }
+            revalidate();
+            repaint();
+            }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        public void keyPressed(KeyEvent e){
+                panelDatos.removeAll();
+                if(e.getSource()==misExpectativas && e.getKeyCode()==KeyEvent.VK_M){
                     textoExpectativas.setText("Es mi primera vez viendo el lenguaje de programación de java, y espero \n" +
                             "que este curso sea de gran ayuda para mi, para aprender adecuadamente \n" +
                             "sobre los eventos, divertirme programando y dar cada vez mas \n" +
@@ -103,9 +137,13 @@ public class GUI_Presentacion extends JFrame {
                     textoExpectativas.setFont(new Font("Arial",Font.BOLD,15));
                     panelDatos.add(textoExpectativas);
                 }
-            }
-            revalidate();
-            repaint();
+                revalidate();
+                repaint();
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
         }
     }
 
